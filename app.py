@@ -7,21 +7,25 @@ import pandas as pd
 app = Flask(__name__)
 app.config["DEBUG"] = True
 api = Api(app)
-jsonString = {"test":"new"}
 
 @app.route('/filter', methods = ['POST'])
 def filter():
 
   if not request.json or not 'payload' in request.json:
     payload = '{"error":"Could not decode request: JSON parsing failed"}'
-    r = Response(payload, mimetype='text/json', status=400)
+    r = Response(payload, mimetype='application/json', status=400, content_type='application/json')
     return r
   
-  #load json body into data
-  data = request.json
+  try:
+    #load json body into data
+    data = request.json
 
-  #load json into dataframe
-  df = pd.json_normalize(data['payload'])
+    #load json into dataframe
+    df = pd.json_normalize(data['payload'])
+  except:
+    payload = '{"error":"Could not decode request: JSON parsing failed"}'
+    r = Response(payload, mimetype='application/json', status=400, content_type='application/json')
+    return r
 
   #Filter drm = True & episode count > 0
   df = df[(df['drm'] == True) & (df['episodeCount'] > 0)]
@@ -37,7 +41,7 @@ def filter():
   result = result.replace("\/","/")
   payload = '{ "response": ' + result + '}'
 
-  r = Response(payload, mimetype='text/json', status=200)
+  r = Response(payload, mimetype='application/json', status=200, content_type='application/json')
   return r
 
 if __name__ == "__main__":
