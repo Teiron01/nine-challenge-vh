@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, make_response, request, Response, abort
 from flask_restful import Api
 from werkzeug.utils import redirect
-from todo import Todo
 import json
 import pandas as pd
 
@@ -10,7 +9,6 @@ app.config["DEBUG"] = True
 api = Api(app)
 jsonString = {"test":"new"}
 
-api.add_resource(Todo, "/todo/<string:id>")
 @app.route('/filter', methods = ['POST'])
 def filter():
 
