@@ -2,18 +2,23 @@ from flask_restful import Resource
 
 todos = [
   {
-    "id": 1,
+    "id": "1",
     "item": "Create sample app",
     "status": "Completed"
   },
   {
-    "id": 2,
+    "id": "2",
     "item": "Deploy in Heroku",
     "status": "Open"
   },
   {
-    "id": 3,
+    "id": "3",
     "item": "Publish",
+    "status": "Open"
+  },
+  {
+    "id": "test",
+    "item": "test",
     "status": "Open"
   }
 ]
