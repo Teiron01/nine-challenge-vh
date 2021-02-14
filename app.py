@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, make_response, request, Response, abort
 from flask_restful import Api
+from werkzeug.exceptions import BadRequest
 from werkzeug.utils import redirect
 import json
 import pandas as pd
@@ -7,6 +8,14 @@ import pandas as pd
 app = Flask(__name__)
 app.config["DEBUG"] = True
 api = Api(app)
+
+@app.errorhandler(400)
+def handle_bad_request(e):
+    payload = '{"error":"Could not decode request: JSON parsing failed"}'
+    r = Response(payload, mimetype='application/json', status=400, content_type='application/json')
+    return r
+
+app.register_error_handler(400, handle_bad_request) 
 
 @app.route('/filter', methods = ['POST'])
 def filter():
